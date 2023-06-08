@@ -12,7 +12,7 @@ function createCommonItemNames_() {
     ['supportRangeItemName', '支援範囲'],
     ['fpi', 'FPI'],
     ['lpo', 'LPO'],
-    ['treatmentTerm', '治療期間'], 
+    ['treatmentTerm', '治療期間'],
   ]);
 }
 /**

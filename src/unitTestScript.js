@@ -25,11 +25,15 @@ function createBaseTestData_(trialType, isFeeApplicable) {
   const trialTypeMap = createTrialTypeItemNamesMap_();
   testData.set('試験種別', trialType);
   testData.set('症例登録費/研究費', isFeeApplicable ? 'あり' : 'なし');
-  if (trialType === trialTypeMap.get('investigatorInitiatedTrial')) {
+  if (
+    trialType === trialTypeMap.get('investigatorInitiatedTrial') ||
+    trialType === trialTypeMap.get('advancedMedical')
+  ) {
     testData.set('目標症例数', 222);
   }
   if (
     trialType === trialTypeMap.get('investigatorInitiatedTrial') ||
+    trialType === trialTypeMap.get('advancedMedical') ||
     isFeeApplicable
   ) {
     testData.set('施設数', 44);
@@ -197,7 +201,9 @@ class TestEditInputItems {
     const flag = new Set();
     targetMap.forEach((value, key) => {
       const result =
-        testData.get(key) === value ? true : new Error(`Error_${key}_${testData.get(key)}_${value}`);
+        testData.get(key) === value
+          ? true
+          : new Error(`Error_${key}_${testData.get(key)}_${value}`);
       flag.add(result);
     });
     const checkData = flag.size > 1 ? flag : null;
@@ -211,11 +217,18 @@ class TestEditInputItems {
   testTrialValues(testData) {
     const trialMap =
       testData.get(this.commonItemNames.get('trialTypeItemName')) ===
-      this.trialTypeMap.get('investigatorInitiatedTrial')
+        this.trialTypeMap.get('investigatorInitiatedTrial') ||
+      testData.get(this.commonItemNames.get('trialTypeItemName')) ===
+        this.trialTypeMap.get('advancedMedical')
         ? this.trialMapInvestigatorInitiatedTrial
         : this.trialMapOthers;
-    if (testData.get(this.commonItemNames.get('trialTypeItemName')) ===
-      this.trialTypeMap.get('investigatorInitiatedTrial') || testData.get('症例登録費/研究費') === 'あり'){
+    if (
+      testData.get(this.commonItemNames.get('trialTypeItemName')) ===
+        this.trialTypeMap.get('investigatorInitiatedTrial') ||
+      testData.get(this.commonItemNames.get('trialTypeItemName')) ===
+        this.trialTypeMap.get('advancedMedical') ||
+      testData.get('症例登録費/研究費') === 'あり'
+    ) {
       trialMap.set('施設数', 44);
     } else {
       trialMap.set('施設数', 10);
@@ -378,6 +391,22 @@ function getTotalAmount() {
     [
       new Map([
         ['試験種別', '医師主導治験'],
+        ['症例登録費/研究費', 'あり'],
+        ['治療期間', '1年1ヶ月'],
+      ]),
+      334625500,
+    ],
+    [
+      new Map([
+        ['試験種別', '先進'],
+        ['症例登録費/研究費', 'なし'],
+        ['治療期間', '1年1ヶ月'],
+      ]),
+      334625500,
+    ],
+    [
+      new Map([
+        ['試験種別', '先進'],
         ['症例登録費/研究費', 'あり'],
         ['治療期間', '1年1ヶ月'],
       ]),
