@@ -70,7 +70,8 @@ function setSupportRangeText_(supportRange) {
  * @private
  */
 function setFinalAnalysisCount_(trialTypeItemNames, trialType) {
-  return trialType === trialTypeItemNames.get('investigatorInitiatedTrial')
+  return trialType === trialTypeItemNames.get('investigatorInitiatedTrial') ||
+    trialType === trialTypeItemNames.get('advancedMedical')
     ? 100
     : 50;
 }

@@ -25,11 +25,15 @@ function createBaseTestData_(trialType, isFeeApplicable) {
   const trialTypeMap = createTrialTypeItemNamesMap_();
   testData.set('試験種別', trialType);
   testData.set('症例登録費/研究費', isFeeApplicable ? 'あり' : 'なし');
-  if (trialType === trialTypeMap.get('investigatorInitiatedTrial')) {
+  if (
+    trialType === trialTypeMap.get('investigatorInitiatedTrial') ||
+    trialType === trialTypeMap.get('advancedMedical')
+  ) {
     testData.set('目標症例数', 222);
   }
   if (
     trialType === trialTypeMap.get('investigatorInitiatedTrial') ||
+    trialType === trialTypeMap.get('advancedMedical') ||
     isFeeApplicable
   ) {
     testData.set('施設数', 44);
@@ -213,12 +217,16 @@ class TestEditInputItems {
   testTrialValues(testData) {
     const trialMap =
       testData.get(this.commonItemNames.get('trialTypeItemName')) ===
-      this.trialTypeMap.get('investigatorInitiatedTrial')
+        this.trialTypeMap.get('investigatorInitiatedTrial') ||
+      testData.get(this.commonItemNames.get('trialTypeItemName')) ===
+        this.trialTypeMap.get('advancedMedical')
         ? this.trialMapInvestigatorInitiatedTrial
         : this.trialMapOthers;
     if (
       testData.get(this.commonItemNames.get('trialTypeItemName')) ===
         this.trialTypeMap.get('investigatorInitiatedTrial') ||
+      testData.get(this.commonItemNames.get('trialTypeItemName')) ===
+        this.trialTypeMap.get('advancedMedical') ||
       testData.get('症例登録費/研究費') === 'あり'
     ) {
       trialMap.set('施設数', 44);
