@@ -35,9 +35,6 @@ function setTrialSheetValues_(sheet, inputData, targetYear) {
             : 5
           : x[trialIdx.get('yearCol')]
         : 1;
-    if (header === commonItemNames.get('trialTypeItemName')) {
-      sheet.getRange(`B${idx + 1}`).clearDataValidations();
-    }
     if (header === 'Comment') {
       commentStart.set('row', idx + 1);
     }

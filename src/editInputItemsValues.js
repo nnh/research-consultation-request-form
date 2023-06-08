@@ -46,8 +46,12 @@ function setTerms_(outputItems, trialTypeItemNames) {
   const fpiToLpo = new GetMonths(
     outputItems.get(commonItemNames.get('fpi'))
   ).getMonthDiff(outputItems.get(commonItemNames.get('lpo')));
-  const monthsOfTreatment = outputItems.has(commonItemNames.get('treatmentTerm'))
-    ? calculateMonthsFromText_(outputItems.get(commonItemNames.get('treatmentTerm')))
+  const monthsOfTreatment = outputItems.has(
+    commonItemNames.get('treatmentTerm')
+  )
+    ? calculateMonthsFromText_(
+        outputItems.get(commonItemNames.get('treatmentTerm'))
+      )
     : null;
   const setupMonths = setupTerm.get(
     outputItems.get(commonItemNames.get('trialTypeItemName'))
