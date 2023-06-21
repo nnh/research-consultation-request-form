@@ -10,8 +10,8 @@ function createCommonItemNames_() {
     ['crfItemName', 'CRF項目数'],
     ['trialTypeItemName', '試験種別'],
     ['supportRangeItemName', '支援範囲'],
-    ['fpi', 'FPI'],
-    ['lpo', 'LPO'],
+    ['fpi', 'FPI (First Patient In)'],
+    ['lpo', 'LPO (Last Patient Out)'],
     ['treatmentTerm', '治療期間'],
   ]);
 }
