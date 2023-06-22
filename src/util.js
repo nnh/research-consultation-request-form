@@ -75,28 +75,6 @@ function convertFullwidthToHalfwidth_(str) {
   return str;
 }
 /**
- * Calculates the number of months from a text representation of years and months.
- *
- * @param {string} text - The text representation of years and months.
- * @returns {number} The calculated number of months.
- */
-function calculateMonthsFromText_(text) {
-  const halfwidthText = convertFullwidthToHalfwidth_(text);
-  if (!halfwidthText) {
-    return 0;
-  }
-  const yearText = /[0-9]+(?=年)/;
-  const year = yearText.test(halfwidthText)
-    ? parseInt(yearText.exec(halfwidthText)[0])
-    : 0;
-  const tempMonthText = halfwidthText.replace(/^.*年/, '');
-  const monthText = /^[0-9]+/;
-  const month = monthText.test(tempMonthText)
-    ? parseInt(monthText.exec(tempMonthText)[0])
-    : 0;
-  return year * 12 + month;
-}
-/**
  * Rounds the number of months to the nearest year.
  *
  * @param {number} months - The number of months.
