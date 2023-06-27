@@ -76,12 +76,15 @@ function createSpreadsheet_(inputData = null) {
   warnings.add(hideSheets_(newSpreadSheet, visibleSheetNames));
   warnings.add(filterHidden_(newSpreadSheet, visibleSheetNames));
   warnings.add(insertAndOutputInputData_(newSpreadSheet, inputData));
-  warnings.add(createPDFFromSpreadsheet_(newSpreadSheet, outputFolder));
+  const pdf = createPDFFromSpreadsheet_(newSpreadSheet, outputFolder);
+  if (isErrorObject_(pdf)) {
+    return pdf;
+  }
   if (warnings.size > 1) {
     let message = Array.from(warnings, value => value.message).join(', ');
     return new Error(message);
   } else {
-    return newSpreadSheet;
+    return [newSpreadSheet, pdf];
   }
 }
 /**
@@ -135,21 +138,19 @@ function createNewSpreadsheet_(templateFile, outputFolder) {
   }
 }
 /**
- * Create a PDF file from the given spreadsheet and save it to the output folder.
- *
+ * Creates a PDF file from a spreadsheet.
  * @param {Spreadsheet} spreadsheet - The spreadsheet to convert to PDF.
- * @param {Folder} outputFolder - The output folder where the PDF file will be saved.
- * @returns {null|Error} Null if successful, or an error object if PDF creation fails.
- * @private
+ * @param {Folder} outputFolder - The folder to save the PDF file in.
+ * @returns {string|Error} - The ID of the created PDF file, or an Error object if PDF creation failed.
  */
 function createPDFFromSpreadsheet_(spreadsheet, outputFolder) {
   try {
     const blob = spreadsheet.getAs('application/pdf');
-    outputFolder.createFile(blob);
+    const pdfFile = outputFolder.createFile(blob);
+    return pdfFile.getId();
   } catch (error) {
     return new Error('PDF creation failed.');
   }
-  return null;
 }
 /**
  * Insert and output the input data to a new sheet in the spreadsheet.

@@ -58,7 +58,13 @@ function processFormResponses_(response) {
   const user = response.getRespondentEmail();
   const items = quotegenerator2.getItemsFromFormRequests(response);
   const inputData = editInputItems_(items);
-  const createSpreadsheetRes = createSpreadsheet_(inputData);
+  const [createSpreadsheetRes, pdfId] = createSpreadsheet_(inputData);
+  gmailAppCommon.executeSendEmail(
+    user,
+    'test-title',
+    'test-body',
+    new Map([['fileIdList', [[pdfId, MimeType.PDF]]]])
+  );
   if (typeof createSpreadsheetRes === 'string') {
     const [title, ss] = createSpreadsheetRes.split('|||');
     res.title = title;
