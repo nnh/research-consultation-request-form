@@ -37,6 +37,12 @@ Google Sheets APIサービスを設定してください。
         "version": "0",
         "libraryId": "ライブラリID",
         "developmentMode": true
+      },
+      {
+        "userSymbol": "utilsLibrary",
+        "version": "0",
+        "libraryId": "ライブラリID",
+        "developmentMode": true
       }
     ],
     "enabledAdvancedServices": [
