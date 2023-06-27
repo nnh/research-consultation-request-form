@@ -30,6 +30,8 @@ function createBaseTestData_(trialType, isFeeApplicable) {
     trialType === trialTypeMap.get('advancedMedical')
   ) {
     testData.set('目標症例数', 222);
+    testData.set('治療期間', '13');
+    testData.set('monthsOfTreatment', 13);
   }
   if (
     trialType === trialTypeMap.get('investigatorInitiatedTrial') ||
@@ -41,47 +43,13 @@ function createBaseTestData_(trialType, isFeeApplicable) {
   const fpiAndLpo = generateCombinedFpiAndLpo_();
   const testDataList = fpiAndLpo.map(([fpi, lpo, months]) => {
     const newtestData = deepCopyMap_(testData);
-    newtestData.set('FPI', fpi);
-    newtestData.set('LPO', lpo);
+    newtestData.set('FPI (First Patient In)', fpi);
+    newtestData.set('LPO (Last Patient Out)', lpo);
     newtestData.set('fpiToLpoMonth', months);
     return newtestData;
   });
-  if (
-    trialType === trialTypeMap.get('investigatorInitiatedTrial') ||
-    trialType === trialTypeMap.get('advancedMedical')
-  ) {
-    const treatmentMonths = getTrialDurations_();
-    treatmentMonths.forEach(([termText, months]) => {
-      const tempTestData = new Map([...testDataList][0]);
-      tempTestData.set('治療期間', termText);
-      tempTestData.set('monthsOfTreatment', months);
-      testDataList.push(tempTestData);
-    });
-  }
   const testEditItems = testDataList.map(testData => editInputItems_(testData));
   return testEditItems;
-}
-/**
- * Returns an array of trial durations in months.
- * @returns {Array} - An array of trial durations.
- */
-function getTrialDurations_() {
-  return [
-    ['1ヶ月', 1],
-    ['0年1ヶ月', 1],
-    ['0年12ヶ月', 12],
-    ['1年', 12],
-    ['1年1ヶ月', 13],
-    ['13ヶ月', 13],
-    ['11年', 132],
-    ['10年9ヶ月', 129],
-    ['一年', 0],
-    ['一年一ヶ月', 0],
-    ['一年一ヶ月', 0],
-    ['', 0],
-    [undefined, 0],
-    [null, 0],
-  ];
 }
 /**
  * Generates combinations of FPI (First Patient In) and LPO (Last Patient Out) dates,
@@ -165,9 +133,6 @@ class TestEditInputItems {
       ['係数', 1],
     ]);
     this.trialTypeMap = createTrialTypeItemNamesMap_();
-    this.trialDurations = new Map(
-      getTrialDurations_(this.trialTypeMap.get('investigatorInitiatedTrial'))
-    );
     this.commonItemNames = createCommonItemNames_();
   }
   /**
@@ -237,28 +202,6 @@ class TestEditInputItems {
     return this.testTargetValues(trialValues, trialMap);
   }
   /**
-   * Tests the treatment term for the test data.
-   * @param {Map} testData - The test data.
-   * @returns {Error|null} - An error if the test fails or null if the test passes.
-   */
-  testTreatmentTerm(testData) {
-    if (
-      (testData.get(this.commonItemNames.get('trialTypeItemName')) ===
-        this.trialTypeMap.get('investigatorInitiatedTrial') ||
-        testData.get(this.commonItemNames.get('trialTypeItemName')) ===
-          this.trialTypeMap.get('advancedMedical')) &&
-      testData.has('治療期間')
-    ) {
-      const test1 = testData.get('monthsOfTreatment');
-      const test2 = this.trialDurations.get(testData.get('治療期間'));
-      return test1 === test2
-        ? null
-        : new Error(`Error_${testData.get('治療期間')}`);
-    } else {
-      return null;
-    }
-  }
-  /**
    * Gets the list of test data.
    * @returns {Array} - An array of test data.
    */
@@ -297,16 +240,6 @@ function runDataChecks_() {
   );
   if (checkScopeOfSupport.some(result => result !== null)) {
     return checkScopeOfSupport;
-  }
-  /**
-   * Result of treatment term check for each test data.
-   * @type {(Error|null)[]}
-   */
-  const checkTreatmentTerm = testDataList.map(testData =>
-    testEditInputItems.testTreatmentTerm(testData)
-  );
-  if (checkTreatmentTerm.some(result => result !== null)) {
-    return checkTreatmentTerm;
   }
   /**
    * Result of trial values check for each test data.
@@ -384,7 +317,7 @@ function getTotalAmount() {
       new Map([
         ['試験種別', '医師主導治験'],
         ['症例登録費/研究費', 'なし'],
-        ['治療期間', '1年1ヶ月'],
+        ['治療期間', '13'],
       ]),
       334625500,
     ],
@@ -392,7 +325,7 @@ function getTotalAmount() {
       new Map([
         ['試験種別', '医師主導治験'],
         ['症例登録費/研究費', 'あり'],
-        ['治療期間', '1年1ヶ月'],
+        ['治療期間', '13'],
       ]),
       334625500,
     ],
@@ -400,7 +333,7 @@ function getTotalAmount() {
       new Map([
         ['試験種別', '先進'],
         ['症例登録費/研究費', 'なし'],
-        ['治療期間', '1年1ヶ月'],
+        ['治療期間', '13'],
       ]),
       334625500,
     ],
@@ -408,7 +341,7 @@ function getTotalAmount() {
       new Map([
         ['試験種別', '先進'],
         ['症例登録費/研究費', 'あり'],
-        ['治療期間', '1年1ヶ月'],
+        ['治療期間', '13'],
       ]),
       334625500,
     ],
@@ -419,7 +352,7 @@ function getTotalAmount() {
       table = getTargetTestData_(table, key, value);
     });
     if (table.length > 0) {
-      const createSpreadsheetRes = createSpreadsheet_(table[0]);
+      const [createSpreadsheetRes, _pdf] = createSpreadsheet_(table[0]);
       const spreadsheet = SpreadsheetApp.openById(createSpreadsheetRes.getId());
       const sheet = spreadsheet.getSheetByName('Quote');
       const value = sheet.getRange('D30').getValue();

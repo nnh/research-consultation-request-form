@@ -10,8 +10,8 @@ function createCommonItemNames_() {
     ['crfItemName', 'CRF項目数'],
     ['trialTypeItemName', '試験種別'],
     ['supportRangeItemName', '支援範囲'],
-    ['fpi', 'FPI'],
-    ['lpo', 'LPO'],
+    ['fpi', 'FPI (First Patient In)'],
+    ['lpo', 'LPO (Last Patient Out)'],
     ['treatmentTerm', '治療期間'],
   ]);
 }
@@ -73,28 +73,6 @@ function convertFullwidthToHalfwidth_(str) {
   }
 
   return str;
-}
-/**
- * Calculates the number of months from a text representation of years and months.
- *
- * @param {string} text - The text representation of years and months.
- * @returns {number} The calculated number of months.
- */
-function calculateMonthsFromText_(text) {
-  const halfwidthText = convertFullwidthToHalfwidth_(text);
-  if (!halfwidthText) {
-    return 0;
-  }
-  const yearText = /[0-9]+(?=年)/;
-  const year = yearText.test(halfwidthText)
-    ? parseInt(yearText.exec(halfwidthText)[0])
-    : 0;
-  const tempMonthText = halfwidthText.replace(/^.*年/, '');
-  const monthText = /^[0-9]+/;
-  const month = monthText.test(tempMonthText)
-    ? parseInt(monthText.exec(tempMonthText)[0])
-    : 0;
-  return year * 12 + month;
 }
 /**
  * Rounds the number of months to the nearest year.
@@ -271,30 +249,5 @@ function filterHidden_(ss, targetSheetNames) {
  * @returns {boolean} Returns true if the object is an instance of Error, otherwise false.
  */
 function isErrorObject_(obj) {
-  return obj instanceof Error;
-}
-/**
- * Sends an email with retries in case of failure.
- *
- * @param {string} emailAddress - The email address of the recipient.
- * @param {string} subject - The subject of the email.
- * @param {string} body - The body content of the email.
- * @returns {Error | null} Returns an Error object if sending the email fails, otherwise null.
- */
-function sendEmail_(emailAddress, subject, body) {
-  const maxRetryCount = 3;
-  let resError = null;
-  let retryCount = 0;
-  while (retryCount < maxRetryCount) {
-    try {
-      GmailApp.sendEmail(emailAddress, subject, body);
-      resError = null;
-      break;
-    } catch (error) {
-      resError = error;
-      Utilities.sleep(1000);
-    }
-    retryCount++;
-  }
-  return resError;
+  return utilsLibrary.isErrorObject(obj);
 }

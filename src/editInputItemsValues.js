@@ -49,9 +49,7 @@ function setTerms_(outputItems, trialTypeItemNames) {
   const monthsOfTreatment = outputItems.has(
     commonItemNames.get('treatmentTerm')
   )
-    ? calculateMonthsFromText_(
-        outputItems.get(commonItemNames.get('treatmentTerm'))
-      )
+    ? outputItems.get(commonItemNames.get('treatmentTerm'))
     : null;
   const setupMonths = setupTerm.get(
     outputItems.get(commonItemNames.get('trialTypeItemName'))
