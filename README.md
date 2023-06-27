@@ -10,6 +10,8 @@ nnh/driveCommon
 https://github.com/nnh/driveCommon  
 nnh/spreadSheetBatchUpdate  
 https://github.com/nnh/spreadSheetBatchUpdate  
+nnh/utilsLibrary  
+https://github.com/nnh/utilsLibrary  
 ### サービス
 Google Sheets APIサービスを設定してください。  
 ### appsscript.json
@@ -50,8 +52,6 @@ Google Sheets APIサービスを設定してください。
 }
 ```
 ### スクリプトプロパティ
-- administratorEmailAddress  
-（未使用）エラー情報送信先のメールアドレスを設定してください。  
 - outputFolderId  
 スプレッドシートを出力するフォルダのIDを設定してください。  
 - templateFileId  
