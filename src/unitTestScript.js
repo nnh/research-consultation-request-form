@@ -352,7 +352,7 @@ function getTotalAmount() {
       table = getTargetTestData_(table, key, value);
     });
     if (table.length > 0) {
-      const createSpreadsheetRes = createSpreadsheet_(table[0]);
+      const [createSpreadsheetRes, _pdf] = createSpreadsheet_(table[0]);
       const spreadsheet = SpreadsheetApp.openById(createSpreadsheetRes.getId());
       const sheet = spreadsheet.getSheetByName('Quote');
       const value = sheet.getRange('D30').getValue();

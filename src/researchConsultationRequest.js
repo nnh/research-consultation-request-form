@@ -61,9 +61,12 @@ function processFormResponses_(response) {
   const [createSpreadsheetRes, pdfId] = createSpreadsheet_(inputData);
   gmailAppCommon.executeSendEmail(
     user,
-    'test-title',
-    'test-body',
-    new Map([['fileIdList', [[pdfId, MimeType.PDF]]]])
+    '概算見積の作成が完了しました',
+    '概算見積の作成が完了しました。\n添付ファイルをご確認ください。',
+    new Map([
+      ['fileIdList', [[pdfId, MimeType.PDF]]],
+      ['noReply', true],
+    ])
   );
   if (typeof createSpreadsheetRes === 'string') {
     const [title, ss] = createSpreadsheetRes.split('|||');

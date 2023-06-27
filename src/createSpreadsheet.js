@@ -171,7 +171,9 @@ function insertAndOutputInputData_(spreadsheet, inputData) {
     const data = Array.from(target);
     outputSheet.getRange(1, 1, data.length, data[0].length).setValues(data);
     outputSheet.setName('Input Data');
-    outputSheet.setColumnWidths(1, outputSheet.getLastColumn(), 140);
+    SpreadsheetApp.flush();
+    outputSheet.autoResizeColumns(1, outputSheet.getLastColumn());
+    SpreadsheetApp.flush();
   } catch (error) {
     return new Error('The process to output input data failed.');
   }
