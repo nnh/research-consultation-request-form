@@ -58,6 +58,8 @@ function setTerms_(outputItems, trialTypeItemNames) {
     outputItems.get(commonItemNames.get('trialTypeItemName'))
   );
   const totalMonths = fpiToLpo + closingMonths + setupMonths;
+  const totalYears = Math.trunc(totalMonths / 12);
+  const totalMonthsText = totalMonths - totalYears * 12;
   return [
     ['fpiToLpo', fpiToLpo],
     ['monthsOfTreatment', monthsOfTreatment],
@@ -66,5 +68,7 @@ function setTerms_(outputItems, trialTypeItemNames) {
     ['totalMonths', totalMonths],
     ['treatmentYears', roundYear_(monthsOfTreatment)],
     ['totalYears', Math.ceil(totalMonths / 12)],
+    ['totalYearsText', totalYears],
+    ['totalMonthsText', totalMonthsText],
   ];
 }

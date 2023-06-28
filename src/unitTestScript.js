@@ -370,3 +370,75 @@ function getTotalAmount() {
   }
   console.log('All items checked.');
 }
+function testCommentOutput() {
+  const commonItemsMap = createCommonItemNames_();
+  const trialTypeItemNamesMap = createTrialTypeItemNamesMap_();
+  const trialTypesAndTreatmentTerm = [
+    [trialTypeItemNamesMap.get('investigatorInitiatedTrial'), 6],
+    [trialTypeItemNamesMap.get('observationalStudiesAndRegistries'), null],
+  ];
+  const fpiLpoPattern = [
+    [
+      '2023-1-1',
+      '2024-12-31',
+      [
+        '契約期間は2022年7月1日〜2025年6月30日 (3年間）を想定しております。',
+        '契約期間は2022年10月1日〜2025年3月31日 (2年6ヶ月間）を想定しております。',
+      ],
+    ],
+    [
+      '2023-1-2',
+      '2024-12-30',
+      [
+        '契約期間は2022年7月1日〜2025年6月30日 (3年間）を想定しております。',
+        '契約期間は2022年10月1日〜2025年3月31日 (2年6ヶ月間）を想定しております。',
+      ],
+    ],
+    [
+      '2023-1-31',
+      '2024-12-1',
+      [
+        '契約期間は2022年7月1日〜2025年6月30日 (3年間）を想定しております。',
+        '契約期間は2022年10月1日〜2025年3月31日 (2年6ヶ月間）を想定しております。',
+      ],
+    ],
+    [
+      '2023-1-1',
+      '2023-3-31',
+      [
+        '契約期間は2022年7月1日〜2023年9月30日 (1年3ヶ月間）を想定しております。',
+        '契約期間は2022年10月1日〜2023年6月30日 (9ヶ月間）を想定しております。',
+      ],
+    ],
+  ];
+  const result = fpiLpoPattern.flatMap(([fpi, lpo, comment]) => {
+    return trialTypesAndTreatmentTerm.map(([trialType, treatmentTerm], idx) => {
+      const itemMap = new Map([
+        [commonItemsMap.get('fpi'), fpi],
+        [commonItemsMap.get('lpo'), lpo],
+        [commonItemsMap.get('trialTypeItemName'), trialType],
+        [commonItemsMap.get('facilitiesItemName'), 11],
+        [commonItemsMap.get('casesItemName'), 222],
+      ]);
+      if (treatmentTerm !== null) {
+        itemMap.set(commonItemsMap.get('treatmentTerm'), treatmentTerm);
+      }
+      const data = editInputItems_(itemMap);
+      const targetComment = data.get('comments')[0][0];
+      const expectedComment = comment[idx];
+      if (targetComment !== expectedComment) {
+        return `comment test ng:${trialType}|${fpi}-${lpo}|${targetComment}|${expectedComment}`;
+      }
+      return null;
+    });
+  });
+  if (!result.every(x => x === null)) {
+    result.forEach(value => {
+      if (value !== null) {
+        console.log(value);
+      }
+    });
+  } else {
+    console.log('comment test ok.');
+  }
+}

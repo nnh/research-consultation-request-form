@@ -129,7 +129,7 @@ class GetMonths {
       targetYear += Math.floor(targetMonth / 12);
       targetMonth = targetMonth % 12;
     }
-    const futureDate = new Date(targetYear, targetMonth, 0);
+    const futureDate = new Date(targetYear, targetMonth + 1, 0);
     return futureDate;
   }
   /**
