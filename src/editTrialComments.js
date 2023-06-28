@@ -12,10 +12,13 @@ function editComments_(inputData) {
   const startDate = calculateAgoDate_(fpi, inputData.get('setupMonths'));
   const endDate = calculateFutureDate_(lpo, inputData.get('closingMonths'));
   const yearText =
-    inputData.get('totalYears') > 0 ? `${inputData.get('totalYears')}年` : '';
-  const monthValue =
-    inputData.get('totalYears') * 12 - inputData.get('totalMonths');
-  const monthText = monthValue > 0 ? `${monthValue}ヶ月` : '';
+    inputData.get('totalYearsText') > 0
+      ? `${inputData.get('totalYearsText')}年`
+      : '';
+  const monthText =
+    inputData.get('totalMonthsText') > 0
+      ? `${inputData.get('totalMonthsText')}ヶ月`
+      : '';
   const comments = [
     `契約期間は${formatDateToString_(startDate)}〜${formatDateToString_(
       endDate
