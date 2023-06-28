@@ -1,6 +1,8 @@
 # research-consultation-request-form
 ## 概要
 研究相談用見積フォームに入力された情報から概算見積のスプレッドシートを作成するスクリプトです。  
+## 使用方法
+https://github.com/nnh/research-consultation-request-form/wiki/usage  
 ## 参照設定
 ### ライブラリ
 下記ライブラリを設定してください。  
