@@ -13,6 +13,7 @@ function createCommonItemNames_() {
     ['fpi', 'FPI (First Patient In)'],
     ['lpo', 'LPO (Last Patient Out)'],
     ['treatmentTerm', '治療期間'],
+    ['replyToEmailAddress', '返信先メールアドレス'],
   ]);
 }
 /**

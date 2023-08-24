@@ -55,10 +55,13 @@ function getLatestResponse_(responses) {
 function processFormResponses_(response) {
   const res = {};
   const editUrl = response.getEditResponseUrl();
-  const user = response.getRespondentEmail();
   const items = quotegenerator2.getItemsFromFormRequests(response);
   const inputData = editInputItems_(items);
   const [createSpreadsheetRes, pdfId] = createSpreadsheet_(inputData);
+  const commonItemNames = createCommonItemNames_();
+  const user = items.has(commonItemNames.get('replyToEmailAddress'))
+    ? items.get(commonItemNames.get('replyToEmailAddress'))
+    : response.getRespondentEmail();
   gmailAppCommon.executeSendEmail(
     user,
     '概算見積の作成が完了しました',
