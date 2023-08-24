@@ -59,7 +59,7 @@ function processFormResponses_(response) {
   const inputData = editInputItems_(items);
   const [createSpreadsheetRes, pdfId] = createSpreadsheet_(inputData);
   const commonItemNames = createCommonItemNames_();
-  const user = commonItemNames.has('replyToEmailAddress')
+  const user = items.has(commonItemNames.get('replyToEmailAddress'))
     ? items.get(commonItemNames.get('replyToEmailAddress'))
     : response.getRespondentEmail();
   gmailAppCommon.executeSendEmail(
